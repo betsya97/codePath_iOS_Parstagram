@@ -70,5 +70,27 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let delegate =  UIApplication.shared.delegate as! SceneDelegate//delegate gets UI type and typecasts it as SceneDelegate since window is in subclass
         delegate.window?.rootViewController = loginViewController
     }
+    //create random comments
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = posts[indexPath.section]
+        let comment = PFObject(className: "Comments") //uses Comments table
+        //tie comments with text and post
+        comment["text"] = "this is a random comment"
+        comment["post"] = post
+        comment["author"] = PFUser.current()!
+        
+        post.add(comment, forKey: "comments")
+        //want every post should have an array of comments, so add this comment to the array
+        //different from firebase, parse saves the post and the comment automatically
+        //we can see on the parse website the new comment column
+        //the comment column only saves ID of the comment and not the object itself
+        post.saveInBackground { (success, Error) in
+            if success{
+                print("Comment saved")
+            }else{
+                print("Error saving comment")
+            }
+        }
+    }
     
 }
