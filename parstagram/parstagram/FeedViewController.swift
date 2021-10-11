@@ -147,7 +147,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let main = UIStoryboard(name:"Main", bundle: nil)
         let loginViewController = main.instantiateViewController(withIdentifier: "LoginViewController")
         
-        let delegate =  UIApplication.shared.delegate as! SceneDelegate//delegate gets UI type and typecasts it as SceneDelegate since window is in subclass
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene ,let delegate = windowScene.delegate as? SceneDelegate else{ return }//delegate gets UI type and typecasts it as SceneDelegate since window is in subclass
         delegate.window?.rootViewController = loginViewController
     }
     //create random comments
